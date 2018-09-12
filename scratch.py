@@ -1,23 +1,21 @@
 # coding=utf-8
 """根据搜索词下载百度图片"""
 import re
-import sys
 import urllib
-
 import requests
 
 
-def getPage(keyword, page, n):
+def getPage(keyWord, page, n):
     page = page * n
-    keyword = urllib.parse.quote(keyword, safe='/')
+    keyWord = urllib.parse.quote(keyWord, safe='/')
     url_begin = "http://image.baidu.com/search/flip?tn=baiduimage&ie=utf-8&word="
-    url = url_begin + keyword + "&pn=" + str(page) + "&gsm=" + str(hex(page)) + "&ct=&ic=0&lm=-1&width=0&height=0"
+    url = url_begin + keyWord + "&pn=" + str(page) + "&gsm=" + str(hex(page)) + "&ct=&ic=0&lm=-1&width=0&height=0"
     return url
 
 
-def get_onepage_urls(onepageurl):
+def get_onepage_urls(OnePageURL):
     try:
-        html = requests.get(onepageurl).text
+        html = requests.get(OnePageURL).text
     except Exception as e:
         print(e)
         pic_urls = []
@@ -27,11 +25,12 @@ def get_onepage_urls(onepageurl):
 
 
 def down_pic(pic_urls):
+    savePath = '/home/runisys/Desktop/UAV/'
     """给出图片链接列表, 下载所有图片"""
     for i, pic_url in enumerate(pic_urls):
         try:
             pic = requests.get(pic_url, timeout=15)
-            string = str(i + 1) + '.jpg'
+            string = savePath + str(i + 1) + '.jpg'
             with open(string, 'wb') as f:
                 f.write(pic.content)
                 print('成功下载第%s张图片: %s' % (str(i + 1), str(pic_url)))
