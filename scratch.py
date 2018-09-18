@@ -25,7 +25,7 @@ def get_onepage_urls(OnePageURL):
 
 
 def down_pic(pic_urls):
-    savePath = '/home/runisys/Desktop/UAV/'
+    savePath = '/home/runisys/Desktop/UAV2/'
     """给出图片链接列表, 下载所有图片"""
     for i, pic_url in enumerate(pic_urls):
         try:
@@ -43,17 +43,19 @@ def down_pic(pic_urls):
 if __name__ == '__main__':
     keyword = '无人机'  # 关键词, 改为你想输入的词即可, 相当于在百度图片里搜索一样
     page_begin = 0
-    page_number = 30
-    image_number = 3
+    image_number_per_page = 30
+    how_many_page_you_want = 10000
     all_pic_urls = []
     while 1:
-        if page_begin > image_number:
+        if page_begin > how_many_page_you_want:
             break
         print("第%d次请求数据", [page_begin])
-        url = getPage(keyword, page_begin, page_number)
+        url = getPage(keyword, page_begin, image_number_per_page)
         onepage_urls = get_onepage_urls(url)
         page_begin += 1
 
         all_pic_urls.extend(onepage_urls)
 
+    print("All image count is ")
+    print(len(all_pic_urls))
     down_pic(list(set(all_pic_urls)))
